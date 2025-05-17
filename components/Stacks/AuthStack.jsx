@@ -17,35 +17,35 @@ const AuthStack = () => {
         name="Login"
         component={Login}
         options={{
-          headerShown: false, // ✅ correct
+          headerShown: false, 
         }}
       />
       <Stack.Screen
         name="ForgotPass"
         component={ForgotPass}
         options={{
-          headerShown: false, // ✅ correct
+          headerShown: false, 
         }}
       />
       <Stack.Screen
         name="OtpVerification"
         component={OtpVerification}
         options={{
-          headerShown: false, // ✅ correct
+          headerShown: false, 
         }}
       />
       <Stack.Screen
         name="NewPassword"
         component={NewPassword}
         options={{
-          headerShown: false, // ✅ correct
+          headerShown: false, 
         }}
       />
         <Stack.Screen
           name="Register"
           component={Registration}
           options={{
-            headerShown: false, // ✅ correct
+            headerShown: false, 
           }}
         />
       </Stack.Navigator>
