@@ -198,7 +198,7 @@ const Game = ({ route, navigation }) => {
       <SafeAreaView style={{ flex: 1 }}>
         <Text style={styles.heading}>
           Tic Tac Toe{'\n'}
-          {player === 'Player1' ? Player1 : Player2}
+          {player === 'Player1' ? "O" : "X"}
         </Text>
 
         <View

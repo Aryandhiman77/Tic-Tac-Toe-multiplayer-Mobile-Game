@@ -6,22 +6,31 @@ import {
   View,
   Image,
 } from 'react-native';
-import React, {useContext, useEffect, useState, useRef} from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import socket from '../context/socket';
 
-import {DataContext} from '../context/Data';
+import { DataContext } from '../context/Data';
 import CustomButton from '../elements/CustomButton';
 
-const Toss = ({roomId,disconnectMsg}) => {
+const Toss = ({ roomId, disconnectMsg }) => {
   const opponentRef = useRef(null);
 
-  const { setStep, tossResult, setTossResult,localRoomId,friendinfo,roomtype} = useContext(DataContext);
+  const {
+    setStep,
+    tossResult,
+    setTossResult,
+    localRoomId,
+    friendinfo,
+    roomtype,
+  } = useContext(DataContext);
 
   const [message, setMessage] = useState('');
   const [tossStep, setTossStep] = useState('choose');
   const [loading, setloading] = useState(false);
-  const [disablebtn,setdisablebtn] =useState(false);
-  const playerWon  = tossResult==="Player1"?friendinfo?.host?.username: tossResult==="Player2" &&friendinfo?.joined?.username;
+  const playerWon =
+    tossResult === 'Player1'
+      ? friendinfo?.host?.username
+      : tossResult === 'Player2' && friendinfo?.joined?.username;
 
   // const processTossResult = (me, opponent) => {
   //   // setloading(true);
@@ -46,11 +55,10 @@ const Toss = ({roomId,disconnectMsg}) => {
     // myselection.current = selection;
     // socket.emit('toss', { roomId, selection });
     setloading(true);
-    socket.emit('toss',localRoomId);
+    socket.emit('toss', localRoomId);
     // console.log(localRoomId);
     // setTossResult("Player2");
     // setTimeout(() => setStep('game'), 2000);
-    
   };
 
   useEffect(() => {
@@ -153,24 +161,55 @@ const Toss = ({roomId,disconnectMsg}) => {
     //   )}
     // </>
     <>
-    <Text style={{fontSize: 14, marginTop: 20, fontWeight: '600',textTransform:"capitalize"}}>{!disconnectMsg?`${roomtype==='joined'?friendinfo?.host?.username:friendinfo?.joined.username} joined successfully.`:disconnectMsg}</Text>
-    <Text style={{fontSize: 14, marginTop: 20, fontWeight: '600',textTransform:"capitalize"}}>{playerWon && playerWon + " Won the toss."} </Text>
-    <CustomButton
-                onPress={handleToss}
-                loading={loading}
-                disabled={disablebtn}
-                loadingColor="black"
-                marginBottom={12}
-                title="Start toss"
-                borderRadius={12}
-                bg="rgb(207, 249, 145)"
-                marginH={14}
-                marginV={10}
-                textColor="black"
-                fontSize={16}
-              />
+      <Text
+        style={{
+          fontSize: 14,
+          marginTop: 20,
+          fontWeight: '600',
+          // textTransform: '',
+        }}
+      >
+        {!disconnectMsg
+          ? `${
+              roomtype === 'join'
+                ? 'Joined to ' + friendinfo?.host?.username + "'s room."
+                : friendinfo?.joined.username + ' joined your room. '
+            }`
+          : disconnectMsg}
+      </Text>
+      <Text
+        style={{
+          fontSize: 14,
+          marginTop: 20,
+          fontWeight: '600',
+          textTransform: 'capitalize',
+        }}
+      >
+        {playerWon && playerWon + ' Won the toss.'}{' '}
+      </Text>
+      {roomtype === 'join' ? (
+        <Text>
+          Waiting for{' '}
+          <Text style={{ fontWeight: 800 }}>{friendinfo?.host?.username}</Text>{' '}
+          to start the toss.{' '}
+        </Text>
+      ) : (
+        <CustomButton
+          onPress={handleToss}
+          loading={loading}
+          disabled={roomtype === 'join'}
+          loadingColor="black"
+          marginBottom={12}
+          title="Start toss"
+          borderRadius={12}
+          bg="rgb(207, 249, 145)"
+          marginH={14}
+          marginV={10}
+          textColor="black"
+          fontSize={16}
+        />
+      )}
     </>
-   
   );
 };
 
@@ -192,7 +231,6 @@ const styles = StyleSheet.create({
     gap: 10,
     justifyContent: 'space-around',
     alignItems: 'center',
-
   },
   button: {},
   image: {
